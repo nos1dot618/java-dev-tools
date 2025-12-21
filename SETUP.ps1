@@ -5,6 +5,18 @@ if (-not (Test-Path ".git" -PathType Container)) {
 $GitHooksDirectory = Join-Path ".git" "hooks"
 New-Item -ItemType Directory -Path $GitHooksDirectory -Force | Out-Null
 
+# Append $CheckstyleIgnoreEntry to .gitignore
+$GitIgnorePath = ".gitignore"
+$CheckstyleIgnoreEntry = ".checkstyle/"
+if (-not (Test-Path $GitIgnorePath)) {
+    New-Item -ItemType File -Path $GitIgnorePath | Out-Null
+}
+$existingGitignoreContent = Get-Content $GitIgnorePath -ErrorAction SilentlyContinue
+# Append only if not already present
+if ($existingGitignoreContent -notcontains $CheckstyleIgnoreEntry) {
+    Add-Content -Path $GitIgnorePath -Value $CheckstyleIgnoreEntry
+}
+
 # Create temp-directory
 $TempDirectory = New-Item -ItemType Directory -Path (
     Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid())
