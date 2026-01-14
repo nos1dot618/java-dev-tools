@@ -20,4 +20,9 @@ public class BazTest {
     //     assertEquals(0.0, value); // placeholder
     // }
 
+    @Test
+    void testCreateThrowsException() {
+        // TODO: implement
+    }
+
 }
