@@ -29,7 +29,7 @@ List REST-API endpoints (built using `javax.ws.rs`) present inside project.
 
 ```powershell
 .\Setup.ps1
-python .\scripts\list_rest_apis.py .\dev-test\src\main\
+python .\scripts\list_rest_api.py .\dev-test\src\main\
 start .\build\rest_apis.csv
 ```
 
