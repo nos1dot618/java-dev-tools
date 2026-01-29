@@ -1,4 +1,4 @@
-> Java Dev-Tools
+> Dev-Tools for Java-Projects.
 ---
 
 ## 1. Static-Analyzer for unit-test-coverage
