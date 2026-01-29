@@ -27,7 +27,6 @@ if __name__ == "__main__":
             method, endpoint, description = match.groups()
             rows.append([method, endpoint, description])
 
-    # Write to CSV
     Path(outputFile).parent.mkdir(parents=True, exist_ok=True)
     with open(outputFile, "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
