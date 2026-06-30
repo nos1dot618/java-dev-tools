@@ -6,7 +6,7 @@
 ### Getting Started
 
 ```powershell
-.\Setup.ps1
+.\Initialize.ps1
 python .\scripts\test_coverage.py .\dev-test\src\main\ .\dev-test\src\test\
 start .\build\test_coverage_report.html
 ```
@@ -20,7 +20,7 @@ information.
 ### Getting Started
 
 ```powershell
-.\pre-commit\Setup.ps1 -SetupPath <path/to/your/repository>
+.\pre-commit\Initialize.ps1 -Path <path/to/your/repository>
 ```
 
 ## 3. Static-Analyzer for listing REST-APIs
@@ -28,7 +28,7 @@ information.
 List REST-API endpoints (built using `javax.ws.rs`) present inside project.
 
 ```powershell
-.\Setup.ps1
+.\Initialize.ps1
 python .\scripts\list_rest_api.py .\dev-test\src\main\
 start .\build\rest_apis.csv
 ```
