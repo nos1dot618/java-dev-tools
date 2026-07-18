@@ -19,21 +19,21 @@ log() {
     fi
 }
 
-info() { 
-    log "INFO" "$BLUE" "$*"; 
+info() {
+    log "INFO" "$BLUE" "$*";
 }
 
-warn() { 
-    log "WARNING" "$YELLOW" "$*"; 
+warn() {
+    log "WARNING" "$YELLOW" "$*";
 }
 
-error() { 
+error() {
     log "ERROR" "$RED" "$*";
 }
 
-success() { 
+success() {
     log "INFO" "$GREEN" "$*";
-} 
+}
 
 notice() {
     log "NOTICE" "$GREY" "$*";

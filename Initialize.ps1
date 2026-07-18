@@ -1,53 +1,17 @@
 [CmdletBinding()]
 param()
 
-Import-Module "$PSScriptRoot\PSLogger.psm1" -Force
-Import-Module "$PSScriptRoot\Config.psm1" -Force
+git submodule update --init --recursive
 
-$BuildPath = Join-Path $PSScriptRoot $BuildDirectory
-$CheckstyleJar = Join-Path $PSScriptRoot "resources\checkstyle-12.3.0-all.jar"
+$Module = "PSLogger"
 
-function Initialize-CheckstyleCheck {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [string]$ClassName
-    )
+if (-not (Get-Module -ListAvailable -Name $Module)) {
+    $ArchiveUri = "https://gitlab.com/ninthcircle/PSLogger/-/archive/master/PSLogger-master.zip"
+    $Path = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "PowerShell\Modules\$Module"
 
-    $SourceFile = Join-Path $PSScriptRoot "src\main\java\fun\ninth\$ClassName.java"
+    Invoke-WebRequest -Uri $ArchiveUri -OutFile "$env:TEMP\$Module.zip"
+    Expand-Archive -Path "$env:TEMP\$Module.zip" -DestinationPath "$env:TEMP\$Module" -Force
 
-    & javac `
-        -cp $CheckstyleJar `
-        -d $BuildPath `
-        $SourceFile
-
-    if ($LASTEXITCODE) {
-        Write-ErrorLog -Message "Failed to compile '$ClassName.java'."
-    }
-
-    Write-InfoLog -Message "Compiled 'src\main\java\fun\ninth\$ClassName.java'."
+    New-Item -ItemType Directory -Path $Path -Force | Out-Null
+    Copy-Item "$env:TEMP\$Module\PSLogger-master\*" $Path -Recurse -Force
 }
-
-New-Item -ItemType Directory -Path $BuildPath -Force | Out-Null
-Write-InfoLog -Message "Created '$BuildPath'."
-
-@(
-    "MethodInventoryCheck"
-    "RestApiInventoryCheck"
-) | ForEach-Object {
-    Initialize-CheckstyleCheck -ClassName $_
-}
-
-$JarFile = Join-Path $BuildPath "$ChecksJarFileName"
-$ResourcesPath = Join-Path $PSScriptRoot "resources"
-
-& jar `
-    cf $JarFile `
-    -C $BuildPath "fun\ninth" `
-    -C $ResourcesPath "checkstyle_packages.xml"
-
-if ($LASTEXITCODE) {
-    Write-ErrorLog -Message "Failed to generate '$JarFile'."
-}
-
-Write-InfoLog -Message "Generated '$JarFile'."
